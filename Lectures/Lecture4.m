@@ -22,6 +22,8 @@ margin(G);
 [Gm,Pm,Wgm,Wpm] = margin(G)
 
 %% looping to iteratively find alpha that converges
+% to design a different controller, change the gain k and the aiming PM as
+% well as the iteration loop value
 for i = 1:10
     i
     phi_max = PM - Pm;
@@ -65,16 +67,16 @@ C = ( (s + z1) * ( s + z2) ) / ( (s + 1/td) * s );
 G = k * C*P;
 [Gm,Pm,Wgm,Wpm] = margin(G);
 margin(G);
-k_leg = [k]
+k_leg = [k];
 for i = 1:5
     k = k + i*100
     G = k*C*P;
     [Gm,Pm,Wgm,Wpm] = margin(G);
     margin(G);
-    k_leg = [k_leg ; k]
+    k_leg = [k_leg ; k];
 end 
 title('Effects of Varying k on Phase Margin');
-legendCell = cellstr(num2str(k_leg, 'k=%-d'))
+legendCell = cellstr(num2str(k_leg, 'k=%-d'));
 legend(legendCell);
 
 % large PM makes system more robust
