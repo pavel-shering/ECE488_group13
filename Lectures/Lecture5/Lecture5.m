@@ -15,21 +15,18 @@ u0 = 0;
 
 %formulating the state space
 y = x(1);
-f1 = x(2);
-f2 = solve(eqn, thdd);
+xdot = [x(2) solve(eqn, thdd)].';
 
-A = jacobian([f1 f2], [x1, x2]);
-B = jacobian([f1 f2], [u]);
-C = jacobian([y], [x1, x2]);
-D = jacobian([y], [u]);
+A = jacobian(xdot, x.');
+B = jacobian(xdot, u);
+C = jacobian(y, x.');
+D = jacobian(y, u);
 
 %compute at Eq point
 A = double(subs(A, [x, u], [Eqx, u0]));
 B = double(subs(B, [x, u], [Eqx, u0]));
 C = double(subs(C, [x, u], [Eqx, u0]));
 D = double(subs(D, [x, u], [Eqx, u0]));
-
-% sys = ss(A,B,C,D)
 
 % xdot = A*x + B*u
 % y = C*X + D*u
@@ -41,9 +38,9 @@ figure(1)
 hold on
 % for i = 0:0.1:3
     T = 0;
-    X0 = [pi 0];
+    X0 = [0.6 0];
 %     X0 = [i 0];
-    linX0 = [pi 0];
+    linX0 = [0.6 0];
 
     %linear derivative
     [t,X] = ode45(@(t,X)lin_pend(t, X, A, B, T), tspan, linX0);
