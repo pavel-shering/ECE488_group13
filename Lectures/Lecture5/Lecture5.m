@@ -40,11 +40,14 @@ hold on
     T = 0;
     X0 = [0.6 0];
 %     X0 = [i 0];
-    linX0 = [0.6 0];
+    % this is an initial condition about the operating point for the linearized
+    % equation. Thus for deltaX0 = 0 means no disturbance, since nothing is
+    % added to the Eqm point of -pi/2
+    deltaX0 = [0.6 0];
 
     %linear derivative
-    [t,X] = ode45(@(t,X)lin_pend(t, X, A, B, T), tspan, linX0);
-    deltaX = X + Eqx;
+    [t,X] = ode45(@(t,X)lin_pend(t, X, A, B, T), tspan, deltaX0);
+    deltaX = X;%+ Eqx;
 
     % figure(1)
     % hold on
