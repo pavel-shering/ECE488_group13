@@ -15,8 +15,8 @@ l1 = 1; %[m]
 l2 = 1; %[m]
 
 %dampers
-c1 = 0; 
-c2 = 0;
+c1 = 1; 
+c2 = 1;
 
 params = [m1 m2 l1 l2 c1 c2];
 
@@ -89,7 +89,6 @@ X0 = [-pi/2 0 0 0];
 % added to the Eqm point of -pi/2
 deltaX0 = [0 0 0 0];
 
-
 %linear derivative
 [t,X] = ode45(@(t,X)lin_roboarm(t, X, A, B, T), tspan, deltaX0);
 deltaX = X; %+ Eqm_tot;
@@ -103,3 +102,13 @@ deltaX = X; %+ Eqm_tot;
 visualize(params, t, Xnl(:,1), Xnl(:,3), '');
 visualize(params, t, deltaX(:,1), deltaX(:,3), '');
 % legend('Non Linear','Linear');
+
+
+% poles at different operating points
+% at down the poles are all real and stable thus even the complex
+% conjugates pairs have real part as neagtive 
+
+% at side the poles are marginally stable, 
+% ASIDE: stable impulse response is internal stability
+
+% at top its unstable, Nothing will give you BIBO stability
