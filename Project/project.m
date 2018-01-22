@@ -18,6 +18,8 @@ l2 = 1; %[m]
 c1 = 0.5; 
 c2 = 0.5;
 
+params = [m1 m2 l1 l2 c1 c2];
+
 % [q1 q1d q2 q2d]
 x = [x1 x2 x3 x4];
 % [T1 T2]
@@ -50,22 +52,22 @@ sol = solve(eqns, [q1dd q2dd])
 y = [x1 x3];
 xdot = [x(2) sol.q1dd x(4) sol.q2dd].'
 
-A = jacobian(xdot, x.')
-B = jacobian(xdot, u.')
-C = jacobian(y, x.')
-D = jacobian(y, u.')
+A = jacobian(xdot, x.');
+B = jacobian(xdot, u.');
+C = jacobian(y, x.');
+D = jacobian(y, u.');
 
 % evaluate at equlibrium points
-A = double(subs(A, [x, u], [Eqm1 Eqm2 u1_0  u2_0]))
-B = double(subs(B, [x, u], [Eqm1 Eqm2 u1_0  u2_0]))
-C = double(subs(C, [x, u], [Eqm1 Eqm2 u1_0  u2_0]))
-D = double(subs(D, [x, u], [Eqm1 Eqm2 u1_0  u2_0]))
+A = double(subs(A, [x, u], [Eqm1 Eqm2 u1_0  u2_0]));
+B = double(subs(B, [x, u], [Eqm1 Eqm2 u1_0  u2_0]));
+C = double(subs(C, [x, u], [Eqm1 Eqm2 u1_0  u2_0]));
+D = double(subs(D, [x, u], [Eqm1 Eqm2 u1_0  u2_0]));
 
 % xdot = A*x + B*u
 % y = C*X + D*u
 
 %% Initial condotions
-tspan = 0:0.001:50; % set time interval
+tspan = 0:0.001:5; % set time interval
 
 % initial conditions
 T1 = 0;
@@ -76,13 +78,18 @@ linX0 = [-pi/2 0 0 0];
 
 %linear derivative
 [t,X] = ode45(@(t,X)lin_roboarm(t, X, A, B, T), tspan, linX0);
-deltaX = X + Eqm_tot;
+deltaX = X; %+ Eqm_tot;
 
 % non-linear derivative
 [t,Xnl] = ode45(@(t,Xnl)non_lin_roboarm(t, Xnl, T), tspan, X0);
 
-figure(1)
-hold on 
+
+% figure(1)
+% hold on 
+visualize(params, t, Xnl(:,1), Xnl(:,3), '')
+visualize(params, t, deltaX(:,1), deltaX(:,3), '')
+
+%{
 plot(t,deltaX(:,1));
 plot(t,Xnl(:,1));
 xlabel('time');
@@ -97,4 +104,4 @@ xlabel('time');
 ylabel('angle q2');
 legend('Linearized', 'Non-Linearized')
 
-
+%}
