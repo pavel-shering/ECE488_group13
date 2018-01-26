@@ -75,7 +75,7 @@ TF = ss(A,B,C,D);
 
 TFpoles = pole(TF);
 
-%% Initial condotions
+%% Initial conditions
 tspan = 0:0.001:15; % set time interval
 
 % initial conditions

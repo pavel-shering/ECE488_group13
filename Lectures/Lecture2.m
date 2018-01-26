@@ -26,5 +26,3 @@ C = [C1   0;
 % TF2 = feedback(P*C2,1);
 
 syms y1 y2 u1 u2
-
-y1 = 
