@@ -128,8 +128,8 @@ K = [k_p1, k_d1 0 0; 0 0 k_p2 k_d2];
 % operatinf point changed to pi/2 for PD simulation 
 [t,X] = ode45(@(t,X)lin_roboarm(t, X, A, B, -(K*X)), tspan, deltaX0);
 figure(1)
-title("january 26 linear")
 plot (t,X(:,1));
+title("january 26 linear Step response")
 
 
 X0 = [pi/2 + 0.1 0 0 0].';
@@ -139,4 +139,5 @@ X0 = [pi/2 + 0.1 0 0 0].';
  figure(2)
  title("january 26 nonlinear")
  plot (t,Xnl(:,1));
+ title("january 26 non-linear Step response");
 %  sol = solve(eqns, [q1dd q2dd]);
