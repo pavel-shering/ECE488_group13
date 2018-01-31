@@ -125,7 +125,7 @@ K = [k_p1, k_d1 0 0; 0 0 k_p2 k_d2];
 
 
 % linear
-% operatinf point changed to pi/2 for PD simulation 
+% operating point changed to pi/2 for PD simulation 
 [t,X] = ode45(@(t,X)lin_roboarm(t, X, A, B, -(K*X)), tspan, deltaX0);
 figure(1)
 plot (t,X(:,1));
