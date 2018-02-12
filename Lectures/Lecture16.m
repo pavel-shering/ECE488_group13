@@ -34,5 +34,9 @@ C = [C C]
 D = zeros(2)
 
 G = C*inv(s*eye(8) -A)*B+D
+% minreal(G)
 
 
+% lecture 17
+Co = ctrb(A,B)
+rank(Co)
