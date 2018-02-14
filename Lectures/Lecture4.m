@@ -9,17 +9,17 @@ Ess = 0.5; % steady state errorfor ramp
 PM = 60; % [deg] desired phase margin
 
 % plant
-s = tf('s')
-P = 1/((s+1)*(s+5)*(s+10))
+s = tf('s');
+P = 1/((s+1)*(s+5)*(s+10));
 
 % system
-k = 320 
+k = 320;
 G = k*P;
 
 figure(1) 
 hold on
 margin(G);
-[Gm,Pm,Wgm,Wpm] = margin(G)
+[Gm,Pm,Wgm,Wpm] = margin(G);
 
 %% looping to iteratively find alpha that converges
 % to design a different controller, change the gain k and the aiming PM as

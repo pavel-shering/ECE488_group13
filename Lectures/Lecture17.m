@@ -62,11 +62,10 @@ B_prime = T*B
 B_prime = round(B_prime)
 
 %% SOLUTION CHECK
-p = [-2.0000001 -2.0000005 -2.0000004];
+p = [-1.0000001 -1.0000005 -1.0000004];
 k = place(A_prime, B_prime, p)
 
 eig(A_prime -  B_prime*k)
-
 
 
 
