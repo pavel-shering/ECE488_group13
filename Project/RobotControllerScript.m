@@ -1,6 +1,6 @@
 %% LINEARIZATION
 %1. Linearize about the destination Point
-U = [T1 T2]
+U = [T1 T2];
 [A, B, C, D, T1, T2] = linearize_roboarm_non_optimized(A, B, C, D, U(1), U(2), Eqm_point);
 
 %based on end effector position, need to wait for a certain amount of time
@@ -12,20 +12,20 @@ U = [T1 T2]
 % sys = ss(A, B, C, D)
 
 % test eigen values of A to where the eigen values are
-eig(A)
+eig(A);
 
 % place poles somewhere
 p = [-2, -3, -4, -5];
 
 % determine the k s.t 
-k = place (A, B, p)
+k = place (A, B, p);
 
 % test that all eig(A-Bk) in OLHP
-eig(A-B*k)
+eig(A-B*k);
 
 %3. return u = -k * delta_x + u_op
-delta_x = qout - X0
-U = -k * delta_x + tau_0
+delta_x = qout(end,:) - X0;
+U = -k * delta_x + tau_0;
 
 %{
 %% CONTROLLER
