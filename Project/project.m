@@ -97,8 +97,8 @@ xdot = subs(xdot, [g, m1, m2, l1, l2, c1, c2], [rg, rm1, rm2, rl1, rl2, rc1, rc2
 % initial state
 X0 = [(-pi/2+0.1) 0 0 0];
 T = [T1 T2];
-% non-linear derivative
-[t,Xnl] = ode45(@(t,Xnl)non_lin_roboarm(t, Xnl, T, rg, rm1, rm2, rl1, rl2, rc1, rc2), tspan, X0, options);
+% non-linear derivative  T, l1, l2, m1, m2, g, c1, c2)
+[t,Xnl] = ode45(@(t,Xnl)non_lin_roboarm(t, Xnl, T, rl1, rl2, rm1, rm2, rg, rc1, rc2), tspan, X0, options);
 
 if(plots)
     plot_pos(t, Xnl(:,1), Xnl(:,3), 'Uncontrolled Non Linear');
@@ -150,8 +150,8 @@ end
 X0 = [(Eqm1(1)+0.1) 0 0 0].';
 % % non-linear derivative. Note that Xnl-X0 is deltaX. We have to account for
 % % deltaX explicitly in nonlinar but in linear everything is already delta
-[t,Xnl] = ode45(@(t,Xnl)non_lin_roboarm(t, Xnl, K*(Xnl - Eqm_point'), rg, rm1, ...
-    rm2, rl1, rl2, rc1, rc2), tspan, X0);
+[t,Xnl] = ode45(@(t,Xnl)non_lin_roboarm(t, Xnl, K*(Xnl - Eqm_point'), ...
+    rl1, rl2, rm1, rm2, rg, rc1, rc2), tspan, X0);
 
 
 if(plots)
