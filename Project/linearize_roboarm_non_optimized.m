@@ -1,4 +1,4 @@
-function [A B C D u1 u2] = linearize_roboarm_non_optimized(A,B,C,D, T1, T2, Eqm_point)
+function [A B C D u1 u2] = linearize_roboarm_non_optimized(A,B,C,D,T1,T2, Eqm_point)
    
     syms x1 x2 x3 x4
     %% sub in eqm_point
