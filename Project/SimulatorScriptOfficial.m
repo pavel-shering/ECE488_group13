@@ -32,9 +32,9 @@ for t=sim_time
    %check if robot meets requirements
    
    RobotControllerScript %your script is used here.
-   if flag == 1
-       break
-   end
+%    if flag == 1
+%        break
+%    end
    [tout,qout] = ode45(@(time,x)non_lin_roboarm(time,x,U,l1,l2,m1,m2,...
        g,c1,c2),[t t+my_delta_t],qout(end,:));
    
