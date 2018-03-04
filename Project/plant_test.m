@@ -8,6 +8,11 @@ m1=1;
 m2=1;
 l1=1;
 l2=1;
+load('yout1.mat');
+load('yout2.mat');
+
+yout1_ta = yout1;
+yout2_ta = yout2;
 
 x01=[0 0 0 0]';
 yout1=[0 0];
@@ -21,7 +26,8 @@ t
 end
 tspan=0:0.001:2;
 yout1=yout1(2:end,:);
-plot(tspan,yout1);
+% plot(tspan,yout1);
+plot(tspan,yout1- yout1_ta);
 legend('q1','q2')
 
 x02=[pi/2 0 0 0]';
@@ -37,16 +43,7 @@ end
 tspan=0:0.001:2;
 figure
 yout2=yout2(2:end,:);
-plot(tspan,yout2);
+% plot(tspan,yout2);
+plot(tspan,yout2-yout2_ta);
 legend('q1','q2')
 
-
-load('yout1.mat');
-figure()
-plot(tspan,yout1);
-legend('q1','q2')
-
-load('yout2.mat');
-figure()
-plot(tspan,yout2);
-legend('q1','q2')
