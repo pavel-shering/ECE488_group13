@@ -18,7 +18,7 @@ p = [-1 -2];
 
 k = place (A, B, p)
 
-% gives an error bbeacuse they are the same location
+% gives an error beacuse they are the same location
 % p = [-1 -1]
 
 p = [-1 -1.001]
