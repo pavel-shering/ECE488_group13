@@ -11,7 +11,7 @@ sim_time = my_delta_t:my_delta_t:0.5;
 
 %initial conditions   
 X0 = x_0;
-U = tau_0;
+U = tau_0; % init torque
 
 [tout,qout] = ode45(@(time,x)non_lin_roboarm(time,x,U,l1,l2,m1,m2,...
     g,c1,c2),[0 my_delta_t],X0);
@@ -19,7 +19,6 @@ U = tau_0;
 q = qout(end,:)';
 q_start = qout;
 t_start = tout;
-U_start = tau_0;
 
 T=1;
 history_q = zeros(length(sim_time), 4);
@@ -34,7 +33,7 @@ for t=sim_time
        g,c1,c2),[t t+my_delta_t],qout(end,:));
    
 %    q=qout(end,[1,3])';
-   q = qout(end,:);
+   q = qout(end,:)';
    history_q(T,:) = q;
    history_torques(T,:) = U;
    T = T + 1;

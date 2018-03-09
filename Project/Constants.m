@@ -21,6 +21,9 @@ g=3.7;%acceleration due to gravity m/s^2 on mars
 % equilibrium point
 x_0 = [-pi/2,0,0,0]';%x_0=[q1_0,q1dot_0,q2_0,q2dot_0] initial conditions for the robot
 % x_0 = [ 0 0 0 0]';
+delta_x_hat0 = x_0; % - x_op %if you wanted to make your starting position ...
+%and the linearization at different points
+delta_x_hat0 = x_0 + [1, 0, 1 , 0]';
 e_0 = [0; 0];
 % tau_0=[T1,T2]'; %initial torque done in constants2
 

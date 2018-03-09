@@ -65,13 +65,15 @@ D = jacobian(y, u.');
 T1 = subs(SST1, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
 T2 = subs(SST2, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
 
-[A, B, C, D, T1, T2] = linearize_roboarm_non_optimized(A, B, C, D, T1, T2, Eqm_point);
+U = [T1 T2];
+
+[A, B, C, D, U] = linearize_roboarm_non_optimized(A, B, C, D, U, Eqm_point);
 % check the location of poles if they are in OLHP // this is based on the
 % equilibrium point
 eig(A)
 
 %% set the steady state torques
-tau_0 = [T1,T2]';
+tau_0 = U';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONTROLLERS (linearize a bunch of controllers at diff operating points)
