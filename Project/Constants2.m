@@ -36,7 +36,7 @@ eqn2 = subs(eqn2, [q1 q1d q2 q2d T1 T2], [x1 x2 x3 x4 u1 u2]);
 eqns = [eqn1 eqn2];
 sol = solve(eqns, [q1dd q2dd]);
 
-% solve for Steady State Torque
+% solve for Steady State Torque where velocities are zero
 T = solve(eqns, [u1 u2]);
 SST1 = subs(T.u1, [x2, x4, q1dd, q2dd], [0, 0, 0, 0]);
 SST2 = subs(T.u2, [x2, x4, q1dd, q2dd], [0, 0, 0, 0]);
@@ -50,8 +50,7 @@ xdot = [x(2) sol.q1dd x(4) sol.q2dd].';
 
 %% Equilibrium points
 % arm pointing strating down, thus q1 is -pi/2
-% operating point changed to pi/2 for PD controller simulation 
-Eqm_point = x_0;
+% operating point changed to pi/2 for PD controller simulation this is x_0
 
 %% LINEAR SYSTEM
 % if params change remember to recalc and copy over the A B C D and SS torque values
@@ -64,10 +63,9 @@ D = jacobian(y, u.');
 
 T1 = subs(SST1, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
 T2 = subs(SST2, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
-
 U = [T1 T2];
 
-[A, B, C, D, U] = linearize_roboarm_non_optimized(A, B, C, D, U, Eqm_point);
+[A, B, C, D, U] = linearize_roboarm_non_optimized(A, B, C, D, U, x_0)
 % check the location of poles if they are in OLHP // this is based on the
 % equilibrium point
 eig(A)
@@ -75,6 +73,7 @@ eig(A)
 %% set the steady state torques
 tau_0 = U';
 
+%{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONTROLLERS (linearize a bunch of controllers at diff operating points)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,8 +130,6 @@ tau_0 = U';
 % title('Step tracking showing zero steady state error');
 % legend('Output State 1', 'Output State 2');
 
-
-
-
+%}
 
 

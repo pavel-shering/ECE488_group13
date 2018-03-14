@@ -40,12 +40,13 @@ if state_feedback
         pO = pSF.*2;
         F = place (A', C', pO)';
         
-        delta_x_hat = ( (A-F*C)*delta_x_hat0 + B*(U-tau_0) + F*(q([1,3])-y_ref([1,3])) )*my_delta_t ...
+        delta_x_hat = ( (A-F*C)*delta_x_hat0 + B*(U-tau_0) + F*(q([1,3])-x_0([1,3])) )*my_delta_t ...
             + delta_x_hat0;
         delta_x_hat0 = delta_x_hat;
     end
     
-    delta_x = qout(end,:)' - y_ref(:,my_traj);
+%     delta_x = qout(end,:)' - y_ref(:,my_traj);
+    delta_x = qout(end,:)' - x_0;
     if state_feedback && ~regulator && ~state_estimator
         delta_U = -k * delta_x;
         U = delta_U + tau_0;
@@ -98,4 +99,21 @@ if regulator
     end
    
 end
+
+
+
+% push means that you will have very good accuracy for position, because
+% regulator has an integrator, hovever add 2 params and increases
+% complexity
+
+% pull is simpler and perhaps faster, but not necessarily accurate. 
+
+% use pull for intermediate waypoints and use push for finals ones
+
+
+% convert angles to end effector position
+% create traj points
+% linearize 8 controllers
+% make a decision statement for push vs pull
+
     

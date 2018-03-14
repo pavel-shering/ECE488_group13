@@ -4,8 +4,8 @@ close all; clearvars; clc;
 tspan = 0:0.001:10; % set time interval
 options = odeset('RelTol',1e-5, 'AbsTol', 1e-6);
 
-vis = 0;
-plots = 1;
+vis = 1;
+plots = 0;
 
 %% TOTAL SYSTEM
 % symbolic model variables
@@ -61,7 +61,7 @@ rl2 = 1.0; %[m]
 rc1 = 1.0; 
 rc2 = 1.0;
 
-params = [rg, rm1, rm2, rl1, rl2, rc1, rc2];
+params = [rm1, rm2, rl1, rl2, rc1, rc2];
 
 %% Equilibrium points
 % arm pointing strating down, thus q1 is -pi/2

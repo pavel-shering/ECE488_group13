@@ -7,7 +7,7 @@ Constants;
 % solves for the state space system and provides S.S torques
 Constants2;
 
-sim_time = my_delta_t:my_delta_t:0.5;
+sim_time = my_delta_t:my_delta_t:2;
 
 %initial conditions   
 X0 = x_0;
@@ -42,11 +42,13 @@ end
 sim_time = [t_start' sim_time];
 history_q = [q_start; history_q];
 
-figure()
-plot(sim_time,history_q(:,[1,3]))
-title(strcat('Trajectory from ', mat2str(X0), ' to ', mat2str(y_ref), ...
-    ' with regulator ', int2str(regulator)));
-legend('q1', 'q2');
+% figure()
+% plot(sim_time,history_q(:,[1,3]))
+% title(strcat('Trajectory from ', mat2str(X0), ' to ', mat2str(y_ref), ...
+%     ' with regulator ', int2str(regulator)));
+% legend('q1', 'q2');
+
+visualize(params, sim_time', history_q(:,1), history_q(:,3), '')
 
  %calculate energy/time, etc...
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
