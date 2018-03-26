@@ -10,8 +10,8 @@
 % c2 = 6; % damping of link 2
 % g = 3.7; %acceleration due to gravity m/s^2 on mars
 
-l1 = 1; %link 1 length
-l2 = 1; %link 2 length
+l1 = 10; %link 1 length
+l2 = 10; %link 2 length
 m1 = 1; %link 1 mass
 m2 = 1; %link 2 mass
 c1 = 1; % damping of link 1

@@ -4,8 +4,10 @@ function [ ] = visualize( params, t, q1, q2, file)
 
 m1 = params(1);
 m2 = params(2);
-l1 = 1000*params(3);
-l2 = 1000*params(4);
+l1 = params(3);
+l2 = params(4);
+% l1 = 1000*params(3);
+% l2 = 1000*params(4);
 c1 = params(5);
 c2 = params(6);
 
@@ -37,17 +39,17 @@ while i < size(t,1)
     
     plot(0,0,'MarkerSize',30,'Marker','.', 'Color', [c1 c1 c1]);
     title('Weeee');
-    a1 = (l1+l2)*1.02;
+    a1 = (l1+l2)*1.5;
     axis equal;
     axis([0, a1, 0, a1]);
   
     hold on;
     line(1000*[0.22, 0.22], 1000*[0, 0.22], 'LineWidth', 2, 'Color', 'red')
     line(1000*[0, 0.22], 1000*[0.22, 0.22], 'LineWidth', 2, 'Color', 'red')
-    plot(1000*0.1,1000*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(1000*0.2,1000*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(1000*0.2,1000*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(1000*0.1,1000*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot(100*0.1,100*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot(100*0.2,100*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot(100*0.2,100*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot(100*0.1,100*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
     
     plot(x2(1:i), y2(1:i), 'MarkerSize', 10, 'Marker', '.', 'Color', 'red')
     
