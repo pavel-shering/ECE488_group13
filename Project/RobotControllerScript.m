@@ -9,7 +9,7 @@
 state_feedback = 1;
 state_estimator = 1;
 regulator = 1;
-kalman_filter = 0;
+kalman_filter = 1;
 optimal_control = 1;
 rng(1)
 
@@ -66,11 +66,11 @@ if state_feedback
             F = place (A', C', pO)';
         end
         
-%         delta_x_hat = ( (A-F*C)*delta_x_hat0 + B*(U-tau_0) + F*(q([1,3])-x_0([1,3])) )*my_delta_t ...
-%             + delta_x_hat0;
-        delta_x_hat = ( (A - F * C)*delta_x_hat0 + B*(U - tau_0) + F*(q - x_0([1,3])) )*my_delta_t ...
-            + delta_x_hat0;
-        delta_x_hat0 = delta_x_hat;
+%         delta_x_hat = ( (A-F*C)*my_state_estimate_vector + B*(U-tau_0) + F*(q([1,3])-x_0([1,3])) )*my_delta_t ...
+%             + my_state_estimate_vector;
+        delta_x_hat = ( (A - F * C)*my_state_estimate_vector + B*(U - tau_0) + F*(q - x_0([1,3])) )*my_delta_t ...
+            + my_state_estimate_vector;
+        my_state_estimate_vector = delta_x_hat;
     end
     
 %     delta_x = qout(end,:)' - y_ref(:,my_traj);
@@ -116,17 +116,17 @@ if regulator
     % end
     
     if ~state_estimator
-%         delta_e  = e_0 + (qout(end,[1,3])' - y_ref([1,3],my_traj)) * my_delta_t;
-        delta_e  = e_0 + (q - y_ref([1,3],my_traj)) * my_delta_t;
+%         delta_e  = my_error + (qout(end,[1,3])' - y_ref(:,my_traj)) * my_delta_t;
+        delta_e  = my_error + (q - y_ref(:,my_traj)) * my_delta_t;
         delta_U = -k1 * delta_x - k2 * delta_e;
         U = delta_U + tau_0;
-        e_0 = delta_e;
+        my_error = delta_e;
     elseif state_estimator
-%         delta_e  = e_0 + (qout(end,[1,3])' - y_ref([1,3],my_traj)) * my_delta_t;
-        delta_e  = e_0 + (q - y_ref([1,3],my_traj)) * my_delta_t;
+%         delta_e  = my_error + (qout(end,[1,3])' - y_ref(:,my_traj)) * my_delta_t;
+        delta_e  = my_error + (q - y_ref(:,my_traj)) * my_delta_t;
         delta_U = -k1 * delta_x_hat - k2 * delta_e;
         U = delta_U + tau_0;
-        e_0 = delta_e;
+        my_error = delta_e;
     end
    
 end

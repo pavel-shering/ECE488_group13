@@ -4,17 +4,15 @@ function [ ] = visualize( params, t, q1, q2, file)
 
 m1 = params(1);
 m2 = params(2);
-l1 = params(3);
-l2 = params(4);
-% l1 = 1000*params(3);
-% l2 = 1000*params(4);
+l1 =  params(3);
+l2 =  params(4);
 c1 = params(5);
 c2 = params(6);
 
 s = 0.8;
 figure('units','normalized','outerposition',[(1-s)/2 (1-s)/2 s s]);
 
-framerate = 30;
+framerate = 5;
 frameperiod = 1/framerate;
 
 curtime = -frameperiod;
@@ -27,8 +25,7 @@ y2 = y1 + l2*sin(q1+q2);
 
 display(max(x2));
 display(max(y2));
-disp('hello')
-disp(t)
+
 while i < size(t,1)
     curtime = min(curtime + frameperiod, t(end));
     while curtime > t(i)
@@ -37,24 +34,24 @@ while i < size(t,1)
     end
     subplot(2,3,[1,4]);
     
-    plot(0,0,'MarkerSize',30,'Marker','.', 'Color', [c1 c1 c1]);
+    plot(0,0,'MarkerSize',30,'Marker','.', 'Color', 'black');
     title('Weeee');
-    a1 = (l1+l2)*1.5;
+    a1 = (l1+l2)*1.02;
     axis equal;
     axis([0, a1, 0, a1]);
   
     hold on;
-    line(1000*[0.22, 0.22], 1000*[0, 0.22], 'LineWidth', 2, 'Color', 'red')
-    line(1000*[0, 0.22], 1000*[0.22, 0.22], 'LineWidth', 2, 'Color', 'red')
-    plot(100*0.1,100*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(100*0.2,100*0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(100*0.2,100*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
-    plot(100*0.1,100*0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    line( [0.22, 0.22],  [0, 0.22], 'LineWidth', 2, 'Color', 'red')
+    line( [0, 0.22],  [0.22, 0.22], 'LineWidth', 2, 'Color', 'red')
+    plot( 0.1, 0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot( 0.2, 0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot( 0.2, 0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
+    plot( 0.1, 0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
     
     plot(x2(1:i), y2(1:i), 'MarkerSize', 10, 'Marker', '.', 'Color', 'red')
     
     line([0, x1(i)], [0 y1(i)], 'LineWidth',0.5*m1+0.1);
-    plot(x1(i),y1(i),'MarkerSize',30,'Marker','.', 'Color', [c2 c2 c2]);
+    plot(x1(i),y1(i),'MarkerSize',30,'Marker','.', 'Color', 'cyan');
     
     line([x1(i), x2(i)], [y1(i), y2(i)], 'LineWidth',0.5*m2+0.1);
 
