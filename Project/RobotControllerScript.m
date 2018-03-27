@@ -22,8 +22,13 @@ mu = 0; % zero mean
 % play around with modelling error due to linearization
 % n = sd.* randn(4, length(t))+ mu;
 
-R = sd^2.*eye(2);
-Q = sd^2.*eye(4);
+R = sd^2.* [1 0 
+            0 1];
+    
+Q = sd^2.* [100000 0 0 0;
+            0 1 0 0;
+            0 0 100000 0;
+            0 0 0 1];
 
 
 %% STATE FEEDBACK CONTROLLER
@@ -73,8 +78,6 @@ if state_feedback
         my_state_estimate_vector = delta_x_hat;
     end
     
-%     delta_x = qout(end,:)' - y_ref(:,my_traj);
-%     delta_x = qout(end,:)' - x_0;
     delta_x = q - x_0(end,:);
     if state_feedback && ~regulator && ~state_estimator
         delta_U = -k * delta_x;
@@ -110,26 +113,35 @@ if regulator
     k2 = k(:,end-1:end);
     
     % return U
-    % if (abs(qout(end,[1,3])' -  y_ref(:,my_traj)) <= my_traj_threshold)
-    %     my_traj = my_traj+1;
+    % if (abs(qout(end,[1,3])' -  my_traj_angles(my_traj_count,:)') <= my_traj_threshold)
+    %     my_traj_count = my_traj_count+1;
     %     % Change tau_0
     % end
     
     if ~state_estimator
-%         delta_e  = my_error + (qout(end,[1,3])' - y_ref(:,my_traj)) * my_delta_t;
-        delta_e  = my_error + (q - y_ref(:,my_traj)) * my_delta_t;
+%         delta_e  = my_error + (qout(end,[1,3])' - my_traj_angles(my_traj_count)') * my_delta_t;
+        delta_e  = my_error + (q - my_traj_angles(my_traj_count,:)') * my_delta_t;
         delta_U = -k1 * delta_x - k2 * delta_e;
         U = delta_U + tau_0;
         my_error = delta_e;
     elseif state_estimator
-%         delta_e  = my_error + (qout(end,[1,3])' - y_ref(:,my_traj)) * my_delta_t;
-        delta_e  = my_error + (q - y_ref(:,my_traj)) * my_delta_t;
+%         delta_e  = my_error + (qout(end,[1,3])' - my_traj_angles(:,my_traj_count)) * my_delta_t;
+        delta_e  = my_error + (q - my_traj_angles(my_traj_count,:)') * my_delta_t;
         delta_U = -k1 * delta_x_hat - k2 * delta_e;
         U = delta_U + tau_0;
         my_error = delta_e;
     end
    
 end
+
+
+
+% if (abs(x_hat(1)) < 0.05 && abs(x_hat(3)) < 0.05)
+%     j = j+1; 
+%     if (j == 32)
+%         j = 31;
+%     end
+% end
 
 
 % push means that you will have very good accuracy for position, because

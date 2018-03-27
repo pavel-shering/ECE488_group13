@@ -65,7 +65,7 @@ U = [T1 T2]
 [A, B, C, D, U] = linearize_roboarm_non_optimized(A, B, C, D, U, x_0)
 % check the location of poles if they are in OLHP // this is based on the
 % equilibrium point
-eig(A)
+% eig(A)
 
 %% set the steady state torques
 tau_0 = U';
