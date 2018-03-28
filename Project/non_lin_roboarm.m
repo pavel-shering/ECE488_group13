@@ -1,11 +1,4 @@
-function Xdot = non_lin_roboarm(t, Xnl, T, l1, l2, m1, m2, g, c1, c2)
-    sl1 = l1;
-    sl2 = l2;
-    sm1 = m1;
-    sm2 = m2;
-    sg = g;
-    sc1 = c1;
-    sc2 = c2;
+function Xdot = non_lin_roboarm(t, Xnl, T, sl1, sl2, sm1, sm2, sg, sc1, sc2)
     u2 = T(2);
     u1 = T(1);  
 
@@ -37,3 +30,4 @@ function Xdot = non_lin_roboarm(t, Xnl, T, l1, l2, m1, m2, g, c1, c2)
             6*sl1^2*sl2^2*sm2^2*x2*x4*cos(x3)*sin(x3) - 3*sg*sl1^2*sl2*sm1*sm2*cos(x1)*cos(x3)))...
             /(12*sl1^2*sl2^2*sm2^2 - 9*sl1^2*sl2^2*sm2^2*cos(x3)^2 + 4*sl1^2*sl2^2*sm1*sm2)];
 end
+

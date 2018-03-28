@@ -41,8 +41,8 @@ while i < size(t,1)
     axis([0, a1, 0, a1]);
   
     hold on;
-    line( [0.22, 0.22],  [0, 0.22], 'LineWidth', 2, 'Color', 'red')
-    line( [0, 0.22],  [0.22, 0.22], 'LineWidth', 2, 'Color', 'red')
+    line( [0.22, 0.22],  [0, 0.22], 'LineWidth', 2, 'Color', 'blue')
+    line( [0, 0.22],  [0.22, 0.22], 'LineWidth', 2, 'Color', 'blue')
     plot( 0.1, 0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
     plot( 0.2, 0.2,'MarkerSize',30,'Marker','.', 'Color', 'green');
     plot( 0.2, 0.1,'MarkerSize',30,'Marker','.', 'Color', 'green');
