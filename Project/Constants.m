@@ -1,7 +1,9 @@
+pull = 1
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %You NEED these constants
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%alum
+% alum
 l1 = 0.441176; %link 1 length
 l2 = 0.441176; %link 2 length
 m1 = l1*0.85; %link 1 mass
@@ -15,13 +17,21 @@ m1 = l1*1.4; %link 1 mass
 m2 = l2*1.4; %link 2 mass
 c1 = 6; % damping of link 1
 c2 = 6; % damping of link 2
-%steel
+% steel
 % l1 = 0.15; %link 1 length
 % l2 = 0.15; %link 2 length
 % m1 = l1*2.5; %link 1 mass
 % m2 = l2*2.5; %link 2 mass
 % c1 = 4; % damping of link 1
 % c2 = 4; % damping of link 2
+
+% gold and aluminum
+
+% steel and aluminum 
+
+% titanium and aluminum
+
+
 g=3.7;%acceleration due to gravity m/s^2 on mars
 % Starting point x_0=[q1_0,q1dot_0,q2_0,q2dot_0] initial conditions for the robot
 
@@ -40,7 +50,12 @@ my_params = [m1, m2, l1, l2, c1, c2];
 % delta_x_hat0 = x_0 + [1, 0, 1 , 0]';
 my_error = [0; 0];
 my_delta_t = 0.001;
-my_traj_count = 1;
+
+if pull 
+    my_traj_count = 1;
+else 
+    my_traj_count = 2;
+end
 my_traj_threshold = 0.05;
 my_tspan = 0:0.001:10; % set time interval
 
@@ -61,7 +76,7 @@ milestones = [ target_A;
                target_D;
                target_A];
            
-my_inbw_points = 2;
+my_inbw_points = 10;
 my_traj_xy = [];
 
 % delete adjacent duplicates
@@ -77,7 +92,7 @@ end
 
 c2_ik = (my_traj_xy(:,1).^2 + my_traj_xy(:,2).^2 - l1^2 - l2^2)/(2*l1*l2);
 s2_ik = sqrt(1 - c2_ik.^2);
-THETA2D = atan2(s2_ik,c2_ik); % theta2 is deduced
+THETA2D = atan2(s2_ik,c2_ik);
 
 k1_ik = l1 + l2*c2_ik;
 k2_ik = l2*s2_ik;
@@ -88,9 +103,11 @@ THETA1D = atan2(my_traj_xy(:,2),my_traj_xy(:,1)) - atan2(k2_ik,k1_ik); % theta1 
 % Y_pred = l1 * sin(THETA1D) + l2 * sin(THETA1D + THETA2D);
 
 my_traj_angles = [THETA1D THETA2D]
+x_0 = [my_traj_angles(1,1) 0 my_traj_angles(1,2) 0]';
 
-% my_traj_angles = [[0.3774 1.4595];
-%                   [0.3603 1.4068]]
+if pull 
+    my_delta_xhat = [0 0 0 0]';
+else
+    my_delta_xhat = x_0;
+end
 
-x_0 = [ my_traj_angles(1,1) 0 my_traj_angles(1,2) 0]';
-my_state_estimate_vector = [0 0 0 0]';

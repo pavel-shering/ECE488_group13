@@ -32,11 +32,11 @@ for t=my_tspan
    [tout,qout] = ode45(@(time,x)non_lin_roboarm(time,x,U,l1,l2,m1,m2,...
        g,c1,c2),[t t+my_delta_t],qout(end,:));
    q=qout(end,[1,3])';
-%    q=qout(end,[1,3])' + (1/3*pi/180).*randn(2,1);
+   q=qout(end,[1,3])' + (1/3*pi/180).*randn(2,1);
    
    history_q(T,:) = q;
    history_torques(T,:) = U;
-   hist_my_est(T,:) = my_state_estimate_vector;
+   hist_my_est(T,:) = my_delta_xhat;
    T = T + 1;
 end
 
@@ -46,6 +46,8 @@ history_q = [q_start'; history_q];
 visualize(my_params, my_tspan', history_q(:,1), history_q(:,2), '')
 % my_tspan = [my_tspan];
 % plot(my_tspan', hist_my_est(:,1))
+
+% plot the true q vs estimated states
 
 %calculate energy/time, etc...
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -55,27 +55,28 @@ sd = 1/3 *pi / 180; % third of degree measurement error
 mu = 0; % zero mean
 
 R_kal =sd^2 .* eye(2);
-Q_kal = eye(4) .* ([0.01 0.001 0.01 0.001]'*1000);
+Q_kal = eye(4) .* ([1 1 1 1]'*100);
+% Q_kal = eye(4) .* ([0.01 0.001 0.01 0.001]'*10000);
 
 R_lqr = eye(2);
-Q_lqr = eye(4) .* [250 1 250 1]';
+Q_lqr = eye(4) .* [2500 1 2500 1]';
 
 R_lqr_aug = eye(2);
-Q_lqr_aug = eye(6) .* [2000 1 2000 1 1 1]';
+Q_lqr_aug = eye(6) .* [1000 1 1000 1 1 1]';
 
 for w = 1:length(my_traj_angles)
     
     u1r = double(subs(T1, [x1 x2 x3 x4], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0]));
     u2r = double(subs(T2, [x1 x2 x3 x4], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0]));
     
-    A = double(subs(A_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]))
-    B = double(subs(B_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]))
+    A = double(subs(A_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]));
+    B = double(subs(B_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]));
     
     % kalman filter
-    [F P_se ev_se] = lqr(A.', C.', Q_kal, R_kal)
+    [F P_se ev_se] = lqr(A.', C.', Q_kal, R_kal);
     F = F';
     % optimal control
-    [K P_sf ev_sf] = lqr(A, B, Q_lqr, R_lqr)
+    [K P_sf ev_sf] = lqr(A, B, Q_lqr, R_lqr);
     
     % regulator
     A_aug = [ A zeros(4,2);
