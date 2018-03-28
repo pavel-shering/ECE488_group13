@@ -1,12 +1,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %You NEED these constants
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%alum
 l1 = 0.441176; %link 1 length
 l2 = 0.441176; %link 2 length
 m1 = l1*0.85; %link 1 mass
 m2 = l2*0.85; %link 2 mass
 c1 = 8; % damping of link 1
 c2 = 8; % damping of link 2
+% titanium 
+l1 = 0.2678; %link 1 length
+l2 = 0.2678; %link 2 length
+m1 = l1*1.4; %link 1 mass
+m2 = l2*1.4; %link 2 mass
+c1 = 6; % damping of link 1
+c2 = 6; % damping of link 2
+%steel
+% l1 = 0.15; %link 1 length
+% l2 = 0.15; %link 2 length
+% m1 = l1*2.5; %link 1 mass
+% m2 = l2*2.5; %link 2 mass
+% c1 = 4; % damping of link 1
+% c2 = 4; % damping of link 2
 g=3.7;%acceleration due to gravity m/s^2 on mars
 % Starting point x_0=[q1_0,q1dot_0,q2_0,q2dot_0] initial conditions for the robot
 

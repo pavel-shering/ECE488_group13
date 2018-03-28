@@ -45,7 +45,7 @@ B_jacobian = jacobian(xdot, u.');
 % C = jacobian(y, x.');
 % D = jacobian(y, u.');
 C = [1 0 0 0;
-     0 0 0 1];
+     0 0 1 0];
 
 T1 = subs(SST1, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
 T2 = subs(SST2, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2]);
@@ -55,43 +55,43 @@ sd = 1/3 *pi / 180; % third of degree measurement error
 mu = 0; % zero mean
 
 R_kal =sd^2 .* eye(2);
-Q_kal = eye(4) .* ([0.01 0.001 0.01 0.001]'*20);
+Q_kal = eye(4) .* ([0.01 0.001 0.01 0.001]'*1000);
 
 R_lqr = eye(2);
 Q_lqr = eye(4) .* [250 1 250 1]';
 
-% R_lqr_aug = eye(2);
-% Q_lqr_aug = eye(6) .* [10 1 10 1 1 1]';
+R_lqr_aug = eye(2);
+Q_lqr_aug = eye(6) .* [2000 1 2000 1 1 1]';
 
 for w = 1:length(my_traj_angles)
     
     u1r = double(subs(T1, [x1 x2 x3 x4], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0]));
     u2r = double(subs(T2, [x1 x2 x3 x4], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0]));
     
-    A = double(subs(A_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]));
-    B = double(subs(B_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]));
+    A = double(subs(A_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]))
+    B = double(subs(B_jacobian, [x1 x2 x3 x4 u1 u2], [my_traj_angles(w,1), 0, my_traj_angles(w,2), 0, u1r, u2r]))
     
     % kalman filter
-    [F P_se ev_se] = lqr(A.', C.', Q_kal, R_kal);
+    [F P_se ev_se] = lqr(A.', C.', Q_kal, R_kal)
     F = F';
     % optimal control
-    [K P_sf ev_sf] = lqr(A, B, Q_lqr, R_lqr);
+    [K P_sf ev_sf] = lqr(A, B, Q_lqr, R_lqr)
     
-%     % regulator
-%     A_aug = [ A zeros(4,2);
-%               C zeros(2,2)];
-%     B_aug = [B ; zeros(2,2)];
-%     
-%     [K_aug P_sf ev_sf] = lqr(A_aug, B_aug, Q_lqr_aug, R_lqr_aug);
-%     k1 = K_aug(:,1:end-2);
-%     k2 = K_aug(:,end-1:end);
+    % regulator
+    A_aug = [ A zeros(4,2);
+              C zeros(2,2)];
+    B_aug = [B ; zeros(2,2)];
+    
+    [K_aug P_sf ev_sf] = lqr(A_aug, B_aug, Q_lqr_aug, R_lqr_aug);
+    k1 = K_aug(:,1:end-2);
+    k2 = K_aug(:,end-1:end);
 
     A_lst(:,:,w) = A;
     B_lst(:,:,w) = B;
     F_lst(:,:,w) = F;
     K_lst(:,:,w) = K;
-%     K1_lst(:,:,w) = k1;
-%     K2_lst(:,:,w) = k2;
+    K1_lst(:,:,w) = k1;
+    K2_lst(:,:,w) = k2;
     Tss_lst(:,:,w) = [u1r u2r];
 end
 
