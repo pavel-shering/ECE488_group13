@@ -1,4 +1,5 @@
 pull = 1
+wait = 1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %You NEED these constants
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,8 +76,16 @@ milestones = [ target_A;
                target_D;
                target_A];
            
-my_inbw_points = 10;
+my_inbw_points = 2;
 my_traj_xy = [];
+
+% This variable is used to check if within 4mm of milestone
+my_milestone_ctr = 2;
+
+% Global boolean for if we are waiting for 0.5s
+recordedMilestoneStartTime = 0;
+% Global variabble for waiting for 0.5s
+milestoneStartTime = 0;
 
 % delete adjacent duplicates
 for k = 1:length(milestones)-1

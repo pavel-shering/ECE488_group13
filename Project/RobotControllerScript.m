@@ -10,7 +10,7 @@ if noise(2) > 1
    noise = [noise(1) 1]'
 end
 q=q + noise;
-
+U_old = U;
 
 if pull 
     %% pull
@@ -21,10 +21,54 @@ if pull
     k1 = K1_lst(:,:,my_traj_count);
     k2 = K2_lst(:,:,my_traj_count);
     U_op =  Tss_lst(:,:,my_traj_count)';
+    q_op = [my_traj_angles(my_traj_count,1) 0 my_traj_angles(my_traj_count,2) 0]';
+
+    cur_pos = my_delta_xhat + q_op;
+    X_pred = l1 * cos(cur_pos(1)) + l2 * cos(cur_pos(1) + cur_pos(3)); % compute x coordinates
+    Y_pred = l1 * sin(cur_pos(1)) + l2 * sin(cur_pos(1) + cur_pos(3));
     
-    if (abs(my_delta_xhat(1)) < 0.001 && abs(my_delta_xhat(3)) < 0.001)
-    % if (abs(qout(end,1)-my_traj_angles(my_traj_count,1)) < 0.01 && abs(qout(end,3)- ...
-%     my_traj_angles(my_traj_count,2)) < 0.01)
+    X = l1 * cos(my_traj_angles(my_traj_count,1)) + l2 * cos(my_traj_angles(my_traj_count,1) + my_traj_angles(my_traj_count,2));
+    Y = l1 * sin(my_traj_angles(my_traj_count,1)) + l2 * sin(my_traj_angles(my_traj_count,1) + my_traj_angles(my_traj_count,2));
+     
+    
+    
+    my_delta_xhat = (my_delta_xhat) + ( (A-F*C)*(my_delta_xhat) ...
+        + B*(U-U_op) + F*(q - my_traj_angles(my_traj_count,:)')  ) * 0.001;
+
+    % state estimate
+    U = -K * (my_delta_xhat) + U_op;
+
+    % regulator
+    my_error  = my_error + (q - my_traj_angles(my_traj_count,:)') * 0.001;
+    delta_U = -k1 * my_delta_xhat - k2 * my_error;
+    U = delta_U + U_op;
+    
+    if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)    
+        if wait
+            if my_milestone_ctr <= length(milestones) &&  sqrt((X_pred - milestones(my_milestone_ctr, 1))^2 + (Y_pred - milestones(my_milestone_ctr, 2))^2) < 0.004
+                disp('At milestone at time: ')
+                t
+                if ~recordedMilestoneStartTime
+                    milestoneStartTime = t;
+                    recordedMilestoneStartTime = 1;
+                elseif recordedMilestoneStartTime
+                    if (t - milestoneStartTime >= 0.5)
+                        % Set up future check for next milestone
+                        my_milestone_ctr = my_milestone_ctr + 1
+                        % Reset variable and go do the torque of the next
+                        % point
+                        recordedMilestoneStartTime = 0;
+                    elseif (t - milestoneStartTime < 0.5)
+                        % Output the same torque as last time
+                        % and exit the script to avoid
+                        % outputting torque of the next point in traj
+                        U = U_old;
+                        return
+                    end
+                end
+            end
+        end
+        
         my_traj_count = my_traj_count+1; 
         if (my_traj_count == length(my_traj_angles)+1)
             my_traj_count = length(my_traj_angles);
@@ -34,19 +78,6 @@ if pull
         end
     end
 
-    my_delta_xhat = (my_delta_xhat) + ( (A-F*C)*(my_delta_xhat) ...
-        + B*(U-U_op) + F*(q - my_traj_angles(my_traj_count,:)')  ) * 0.001;
-
-    % straight state feedback
-    % U = -K * (qout(end,:)'-[my_traj_angles(my_traj_count,1) 0 my_traj_angles(my_traj_count,2) 0]') + U_op;
-
-    % state estimate
-    U = -K * (my_delta_xhat) + U_op;
-
-    % regulator
-    my_error  = my_error + (q - my_traj_angles(my_traj_count,:)') * 0.001;
-    delta_U = -k1 * my_delta_xhat - k2 * my_error;
-    U = delta_U + U_op;
 else 
     %% push
     A = A_lst(:,:,my_traj_count-1);
@@ -59,11 +90,8 @@ else
     q_op = [my_traj_angles(my_traj_count-1,1) 0 my_traj_angles(my_traj_count-1,2) 0]';
     q_dest = [my_traj_angles(my_traj_count,1) 0 my_traj_angles(my_traj_count,2) 0]';
     
-%     delta_y_ref =q_dest - q_op;
     my_delta_xhat = (my_delta_xhat)  + ( (A-F*C)*(my_delta_xhat) ...
         + B*(U-U_op) + F*(q  - q_op([1,3],:)) )*0.001;    
-    
-    %     U = -K * (my_delta_xhat) + U_op;
     
     my_error = my_error + (q - q_dest([1,3],:)) * 0.001;
     delta_U = -k1 * (my_delta_xhat) - k2 * my_error;
@@ -78,10 +106,6 @@ else
      
     
     if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)
-%     if (abs(my_delta_xhat(1) - my_traj_angles(my_traj_count-1,1)) < 0.01 && ...
-%             abs(my_delta_xhat(3)- my_traj_angles(my_traj_count-1,2)) < 0.01)
-%     if (abs(qout(end,1)-my_traj_angles(my_traj_count,1)) < 0.01 && abs(qout(end,3)- ...
-%     my_traj_angles(my_traj_count,2)) < 0.01)
         my_traj_count = my_traj_count+1; 
         if (my_traj_count == length(my_traj_angles)+1)
             my_traj_count = length(my_traj_angles);

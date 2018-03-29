@@ -23,7 +23,7 @@ history_q = zeros(length(my_tspan), 2);
 history_torques = zeros(length(my_tspan), 2);
 
 for t=my_tspan
-   t
+   t;
    % check if robot meets requirements
    
    RobotControllerScript %your script is used here.
@@ -59,7 +59,6 @@ visualize(my_params, my_tspan1', history_q1(:,1), history_q1(:,2), '')
 % ENERGY CALCULATION 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 energy = history_torques*history_torques';
-energy = sum(sum(energy)) / 1000000; 
-
+energy = sum(sum(energy)) / 1000000
 
 %stift solver
