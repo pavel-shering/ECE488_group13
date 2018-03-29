@@ -76,8 +76,14 @@ milestones = [ target_A;
                target_D;
                target_A];
            
-my_inbw_points = 10;
+my_inbw_points = 4;
 my_traj_xy = [];
+
+% This variable is used to check if within 4mm of milestone
+my_milestone_ctr = 2;
+
+recordedMilestoneStartTime = 0;
+milestoneStartTime = 0;
 
 % delete adjacent duplicates
 for k = 1:length(milestones)-1

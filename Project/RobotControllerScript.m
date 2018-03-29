@@ -10,6 +10,35 @@ if pull
     if (abs(my_delta_xhat(1)) < 0.001 && abs(my_delta_xhat(3)) < 0.001)
     % if (abs(qout(end,1)-my_traj_angles(my_traj_count,1)) < 0.01 && abs(qout(end,3)- ...
 %     my_traj_angles(my_traj_count,2)) < 0.01)
+        %Forward kinematics
+        tyler_x = l1 + l2*cos(q(2))*cos(q(1)) - l2*sin(q(2))*sin(q(1));
+        tyler_y = l1 + l2*cos(q(2))*sin(q(1)) + l2*sin(q(2))*cos(q(1));
+        if (abs(tyler_x - milestones(my_milestone_ctr, 1)) < 0.004 && abs(tyler_y - milestones(my_milestone_ctr, 2)) < 0.004)
+            if ~recordedMilestoneStartTime
+                milestoneStartTime = t;
+                recordedMilestoneStartTime = 1;
+                disp('Entered milestone for the first time')
+                milestone
+                disp('Starting to wait at time:')
+                t
+            elseif recordedMilestoneStartTime
+                if (t - milestoneStartTime >= 0.5)
+                    disp('Done waiting at time:')
+                    t
+                    % Set up future check for next milestone
+                    my_milestone_ctr = my_milestone_ctr + 1
+                    % reset variable and go do the torque of the next
+                    % point
+                    recordedMilestoneStartTime = 0;
+                elseif (t - milestoneStartTime < 0.5)
+                    % Output the same torque as last time
+                    % and exit the script to avoid
+                    % outputting torque of the next point in traj
+                    U = -K * (my_delta_xhat) + U_op;
+                    return
+                end
+            end
+        end
         my_traj_count = my_traj_count+1; 
         if (my_traj_count == length(my_traj_angles)+1)
             my_traj_count = length(my_traj_angles);
