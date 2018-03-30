@@ -10,11 +10,18 @@
 %     * [ ] Report
 %         * [ ] explain why our gains are good. How? wehave tunef Q. Why u tuned it. Why things are weighted certaing wayws. For speed etc
 
-% ENERGY:20.8 MJ without 10% mass stuff and noise at links 
-% TIME: 7s
-
-
-
+% ENERGY: 76.5326J without 10% mass stuff and noise at links 
+% TIME: 3.7460s with 30 l1
+% with noise and varitions l1 = 27 i get 4.1 s and energry = 60.33J
+% 
+%     R_kal = sd^2 .* eye(2) *1.5;
+%     Q_kal = eye(4) .* ([1 2 1 2]'*1);
+% 
+%     R_lqr = eye(2);
+%     Q_lqr = eye(4) .* [250000 1 250000 1]';
+% 
+%     R_lqr_aug = eye(2);
+%     Q_lqr_aug = eye(6) .* [25000 1 25000 1 10000 10000]';
 
 %this is the general format of the simulator script
 close all; clear all; clc;
@@ -28,7 +35,7 @@ Constants2;
 %initial conditions   
 X0 = x_0;
 U = tau_0; % init torque
-
+    
 [tout,qout] = ode45(@(time,x)non_lin_roboarm(time,x,U,l1,l2,m1,m2,...
     g,c1,c2),[0 my_delta_t],X0);
 q=qout(end,[1,3])';
@@ -60,7 +67,6 @@ my_tspan1 = [t_start' my_tspan];
 history_q1 = [q_start'; history_q];
 visualize(my_params, my_tspan1', history_q1(:,1), history_q1(:,2), '')
 
-
 % plot the true q vs estimated states
 % figure()
 % hold on
@@ -76,7 +82,8 @@ visualize(my_params, my_tspan1', history_q1(:,1), history_q1(:,2), '')
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ENERGY CALCULATION 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-energy = history_torques*history_torques';
-energy = sum(sum(energy)) / 1000000
+% energy = history_torques'*history_torques;
+% energy = sum(sum(energy)) / 1000
+my_energy
 
 %stift solver

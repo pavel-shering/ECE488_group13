@@ -55,19 +55,18 @@ sd = (1/3)*(pi / 180); % third of degree measurement error
 mu = 0; % zero mean
 
 if pull 
-    R_kal = sd^2 .* eye(2) *1.5;
-    Q_kal = eye(4) .* ([1 2 1 2]'*2);
+    R_kal = sd^2 .* eye(2) *1.7;
+    Q_kal = eye(4) .* ([1 2 1 2]');
 
     R_lqr = eye(2);
     Q_lqr = eye(4) .* [250000 1 250000 1]';
 
     R_lqr_aug = eye(2);
-    Q_lqr_aug = eye(6) .* [25000 1 25000 1 10000 10000]';
+    Q_lqr_aug = eye(6) .* [45000 1 45000 1 10000 10000]';
 else
     R_kal = sd^2 .* eye(2);
     Q_kal = eye(4) .* ([1 1 1 1]'*1.5);
-    % Q_kal = eye(4) .* ([1 1000 1 1000]'./ 10);
-    % Q_kal = eye(4) .* ([0.01 0.001 0.01 0.001]'*10000);
+
 
     R_lqr = eye(2);
     Q_lqr = eye(4) .* [25000 1 25000 1]';

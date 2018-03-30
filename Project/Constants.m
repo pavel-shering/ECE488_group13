@@ -12,17 +12,20 @@ wait = 1
 % % c2 = 6 + rand(1)*4; % damping of link 2
 % c1 = 8; % damping of link 1
 % c2 = 8; % damping of link 2
+
 % titanium 
-l1 = 0.2678; %link 1 length
-l2 = 0.2678; %link 2 length
+l1 = 0.27; %link 1 length
 % m1 = (1.4*l1 - 0.1*1.4*l1) + rand(1)*(0.2*1.4*l1); %link 1 mass
 % m2 = 0.75 - m1; %link 2 mass
+% l2 = m2/1.4; %link 2 length
 % c1 = 4 + rand(1)*4; % damping of link 1
 % c2 = 4 + rand(1)*4; % damping of link 2
 m1 = 1.4*l1; %l1 mass
-m2 = 1.4*l2;
+m2 = 0.75-m1;
+l2 = m2/1.4; %link 2 length
 c1 = 6; % damping of link 1
 c2 = 6; % damping of link 2
+
 % steel
 % l1 = 0.15; %link 1 length
 % l2 = 0.15; %link 2 length
@@ -31,16 +34,7 @@ c2 = 6; % damping of link 2
 % c1 = 4; % damping of link 1
 % c2 = 4; % damping of link 2
 
-% gold and aluminum
-
-% steel and aluminum 
-
-% titanium and aluminum
-
-
 g=3.7;%acceleration due to gravity m/s^2 on mars
-% Starting point x_0=[q1_0,q1dot_0,q2_0,q2dot_0] initial conditions for the robot
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %Declare all your variables here, prefix with my_ 
@@ -49,13 +43,13 @@ g=3.7;%acceleration due to gravity m/s^2 on mars
 my_time = 0;
 my_params = [m1, m2, l1, l2, c1, c2];
 % my_angle_vector = [0 0]';
-
 % my_state_estimate_vector = [0 0 0 0]';
 % delta_x_hat0 = x_0; % - x_op %if you wanted to make your starting position ...
 %and the linearization at different points
 % delta_x_hat0 = x_0 + [1, 0, 1 , 0]';
 my_error = [0; 0];
 my_delta_t = 0.001;
+my_energy = 0;
 
 if pull 
     my_traj_count = 1;
@@ -82,7 +76,7 @@ milestones = [ target_A;
                target_D;
                target_A];
            
-my_inbw_points = 2 + 2;
+my_inbw_points = 2 + 10;
 my_traj_xy = [];
 
 % This variable is used to check if within 4mm of milestone

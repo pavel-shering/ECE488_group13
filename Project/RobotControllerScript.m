@@ -43,10 +43,6 @@ if pull
         my_traj_angles(my_traj_count,2));
     Y = l1 * sin(my_traj_angles(my_traj_count,1)) + l2 * sin(my_traj_angles(my_traj_count,1) + ...
         my_traj_angles(my_traj_count,2));
-     
-    
-  
-
     
     if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)    
         if wait
@@ -123,14 +119,50 @@ else
         my_traj_angles(my_traj_count,2));
      
     
-    if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)
+    if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)    
+        if wait
+            if my_milestone_ctr <= length(milestones) &&  ...
+                    sqrt((X_pred - milestones(my_milestone_ctr, 1))^2 +...
+                    (Y_pred - milestones(my_milestone_ctr, 2))^2) < 0.004
+                if ~recordedMilestoneStartTime
+                    milestoneStartTime = t;
+                    recordedMilestoneStartTime = 1;
+                    disp('Start time: ')
+                    t
+                    return
+                elseif recordedMilestoneStartTime
+                    if (t - milestoneStartTime >= 0.6)
+                        % Set up future check for next milestone
+                        my_milestone_ctr = my_milestone_ctr + 1
+                        % Reset variable and go do the torque of the next
+                        % point
+                        recordedMilestoneStartTime = 0;
+                    elseif (t - milestoneStartTime < 0.6)
+                        % Output the same torque as last time
+                        % and exit the script to avoid
+                        % outputting torque of the next point in traj
+                        U = U_op;
+                        return
+                    end
+                end
+            end
+        end
+        
         my_traj_count = my_traj_count+1; 
         if (my_traj_count == length(my_traj_angles)+1)
             my_traj_count = length(my_traj_angles);
+            U = U_op;
+            return
         else 
-            my_delta_xhat = my_delta_xhat + q_op - q_dest;
+            my_delta_xhat = [my_traj_angles(my_traj_count-1,1) 0 my_traj_angles(my_traj_count-1,2) 0]' - ...
+            [my_traj_angles(my_traj_count,1) 0 my_traj_angles(my_traj_count,2) 0]';
         end
-
+    else 
+        if recordedMilestoneStartTime == 1
+            % You left the 0.004 after you entered it
+            milestoneStartTime = 0;
+            recordedMilestoneStartTime = 0;
+        end
     end
 
 end 
@@ -141,3 +173,4 @@ end
 % pull is simpler and perhaps faster, but not necessarily accurate. 
 
 % use pull for intermediate waypoints and use push for finals ones
+my_energy = my_energy + U'*U*0.001;
