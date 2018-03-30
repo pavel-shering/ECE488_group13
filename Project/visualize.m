@@ -63,6 +63,7 @@ while i < size(t,1)
     plot(t(i), q1(i), 'MarkerSize', 20, 'Marker', '.', 'Color', 'red');
     hold off;
     title('State uno');
+    xlabel('Time [s]');
 
     subplot(2,3, 5);
     plot(t, q2);
@@ -70,6 +71,7 @@ while i < size(t,1)
     plot(t(i), q2(i), 'MarkerSize', 20, 'Marker', '.', 'Color', 'red');
     hold off;
     title('State dos');
+    xlabel('Time [s]');
 
     subplot(2,3, 3);
     plot(t, x2);
@@ -77,6 +79,8 @@ while i < size(t,1)
     plot(t(i), x2(i), 'MarkerSize', 20, 'Marker', '.', 'Color', 'red');
     hold off;
     title('Pos X')
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
     
     subplot(2,3, 6);
     plot(t, y2);
@@ -84,7 +88,8 @@ while i < size(t,1)
     plot(t(i), y2(i), 'MarkerSize', 20, 'Marker', '.', 'Color', 'red');
     hold off;
     title('Pos Y')
-
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
     
     
     drawnow;
@@ -104,14 +109,22 @@ end
 
     figure()
     plot(t, ((x2 - 0.10).^2 +(y2-0.2).^2).^(1/2));
-    title('Distance A ');
+    title('Distance to A ');
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
     figure()
-    plot(t, ((x2 - 0.20).^2 +(y2-0.2).^2).^(1/2));
-    title('Distance B ');
+    plot(t, ((x2 - 0.20).^2 +(y2-0.2).^2).^(1/2));    
+    title('Distance to B ');
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
     figure()
     plot(t, ((x2 - 0.20).^2 +(y2-0.1).^2).^(1/2));
-    title('Distance C ');
+    title('Distance to C ');
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
     figure()
     plot(t, ((x2 - 0.10).^2 +(y2-0.1).^2).^(1/2));
-    title('Distance D ');
+    title('Distance to D ');
+    ylabel('Distance [m]');
+    xlabel('Time [s]');
 end

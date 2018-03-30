@@ -52,10 +52,9 @@ T2 = subs(SST2, [sg, sm1, sm2, sl1, sl2, sc1, sc2], [g, m1, m2, l1, l2, c1, c2])
 
 % EKF and LQR design
 sd = (1/3)*(pi / 180); % third of degree measurement error
-mu = 0; % zero mean
 
-if pull 
-    R_kal = sd^2 .* eye(2) *1.7;
+if my_pull 
+    R_kal = my_sd^2 .* eye(2) *1.7;
     Q_kal = eye(4) .* ([1 2 1 2]');
 
     R_lqr = eye(2);
@@ -64,18 +63,14 @@ if pull
     R_lqr_aug = eye(2);
     Q_lqr_aug = eye(6) .* [45000 1 45000 1 10000 10000]';
 else
-    R_kal = sd^2 .* eye(2);
+    R_kal = my_sd^2 .* eye(2);
     Q_kal = eye(4) .* ([1 1 1 1]'*1.5);
-
 
     R_lqr = eye(2);
     Q_lqr = eye(4) .* [25000 1 25000 1]';
-    % Q_lqr = eye(4) .* [10 200 10 200]';
 
     R_lqr_aug = eye(2);
-    % R_lqr_aug = eye(2).*100;
     Q_lqr_aug = eye(6) .* ([1 1 1 1 100000 100000]');
-    % Q_lqr_aug = eye(6) .* [1000 1 1000 1 10000 10000]';
 end 
 
 for w = 1:length(my_traj_angles)

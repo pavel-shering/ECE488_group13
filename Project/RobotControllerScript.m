@@ -1,19 +1,17 @@
-mu = [0 0];
-sigma = [1/3 1/3] * pi / 180;
-noise = mvnrnd(mu,sigma.^2)';
+my_mu = [0 0];
+sigma = [my_sd my_sd];
+noise = mvnrnd(my_mu,sigma.^2)';
 
-% noise = sd.*randn(2,1);
 if noise(1) > 1 
-   noise = [1 noise(2)]'
+   noise = [1 noise(2)]';
 end
 if noise(2) > 1 
-   noise = [noise(1) 1]'
+   noise = [noise(1) 1]';
 end
-% q = q;
-q = q + noise;
-U_old = U;
 
-if pull 
+% q = q + noise;
+
+if my_pull 
     %% pull
     A = A_lst(:,:,my_traj_count);
     B = B_lst(:,:,my_traj_count);
@@ -45,7 +43,7 @@ if pull
         my_traj_angles(my_traj_count,2));
     
     if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)    
-        if wait
+        if my_wait
             if my_milestone_ctr <= length(milestones) &&  ...
                     sqrt((X_pred - milestones(my_milestone_ctr, 1))^2 +...
                     (Y_pred - milestones(my_milestone_ctr, 2))^2) < 0.004
@@ -120,7 +118,7 @@ else
      
     
     if (sqrt((X_pred - X)^2 + (Y_pred - Y)^2) <= 0.004)    
-        if wait
+        if my_wait
             if my_milestone_ctr <= length(milestones) &&  ...
                     sqrt((X_pred - milestones(my_milestone_ctr, 1))^2 +...
                     (Y_pred - milestones(my_milestone_ctr, 2))^2) < 0.004
@@ -166,11 +164,8 @@ else
     end
 
 end 
-% push means that you will have very good accuracy for position, because
-% regulator has an integrator, however add 2 params and increases
-% complexity
 
-% pull is simpler and perhaps faster, but not necessarily accurate. 
-
-% use pull for intermediate waypoints and use push for finals ones
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENERGY CALCULATION 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 my_energy = my_energy + U'*U*0.001;
