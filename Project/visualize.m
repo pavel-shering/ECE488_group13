@@ -83,7 +83,9 @@ while i < size(t,1)
     hold on;
     plot(t(i), y2(i), 'MarkerSize', 20, 'Marker', '.', 'Color', 'red');
     hold off;
-    title('Pos Y')    
+    title('Pos Y')
+
+    
     
     drawnow;
     if ~strcmp(file, '')
@@ -99,4 +101,17 @@ while i < size(t,1)
     end
     
 end
+
+    figure()
+    plot(t, ((x2 - 0.10).^2 +(y2-0.2).^2).^(1/2));
+    title('Distance A ');
+    figure()
+    plot(t, ((x2 - 0.20).^2 +(y2-0.2).^2).^(1/2));
+    title('Distance B ');
+    figure()
+    plot(t, ((x2 - 0.20).^2 +(y2-0.1).^2).^(1/2));
+    title('Distance C ');
+    figure()
+    plot(t, ((x2 - 0.10).^2 +(y2-0.1).^2).^(1/2));
+    title('Distance D ');
 end

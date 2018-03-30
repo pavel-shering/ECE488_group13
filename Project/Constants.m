@@ -4,17 +4,23 @@ wait = 1
 % %You NEED these constants
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % alum
-l1 = 0.441176; %link 1 length
-l2 = 0.441176; %link 2 length
-m1 = l1*0.85; %link 1 mass
-m2 = l2*0.85; %link 2 mass
-c1 = 8; % damping of link 1
-c2 = 8; % damping of link 2
+% l1 = 0.441176; %link 1 length
+% l2 = 0.441176; %link 2 length
+% m1 = l1*0.85; %link 1 mass
+% m2 = l2*0.85; %link 2 mass
+% % c1 = 6 + rand(1)*4; % damping of link 1
+% % c2 = 6 + rand(1)*4; % damping of link 2
+% c1 = 8; % damping of link 1
+% c2 = 8; % damping of link 2
 % titanium 
 l1 = 0.2678; %link 1 length
 l2 = 0.2678; %link 2 length
-m1 = l1*1.4; %link 1 mass
-m2 = l2*1.4; %link 2 mass
+% m1 = (1.4*l1 - 0.1*1.4*l1) + rand(1)*(0.2*1.4*l1); %link 1 mass
+% m2 = 0.75 - m1; %link 2 mass
+% c1 = 4 + rand(1)*4; % damping of link 1
+% c2 = 4 + rand(1)*4; % damping of link 2
+m1 = 1.4*l1; %l1 mass
+m2 = 1.4*l2;
 c1 = 6; % damping of link 1
 c2 = 6; % damping of link 2
 % steel
@@ -76,7 +82,7 @@ milestones = [ target_A;
                target_D;
                target_A];
            
-my_inbw_points = 2;
+my_inbw_points = 2 + 2;
 my_traj_xy = [];
 
 % This variable is used to check if within 4mm of milestone

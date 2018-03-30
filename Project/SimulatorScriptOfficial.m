@@ -1,3 +1,21 @@
+% [ ] 488 project work
+%     * [X] Settle within 4mm for 0.5 seconds at points A,B,C,D
+%         * [X] without noise
+%         * [X] with noise
+%     * [X] Test with  up to 10% variation in last link due to EE variations
+%         * [X] mass of link 2 ,moved to link 1
+%     * [X] Test with noise at joints. The friction of each joint will be changed by up to +/-0.5N/(rad/s) from your originally chosen friction values
+%         * [X] TA: How do we make sure it still works under htese circumstances?
+%     * [X] Ok so all 3 of those noise things happen at the same time  
+%     * [ ] Report
+%         * [ ] explain why our gains are good. How? wehave tunef Q. Why u tuned it. Why things are weighted certaing wayws. For speed etc
+
+% ENERGY:20.8 MJ without 10% mass stuff and noise at links 
+% TIME: 7s
+
+
+
+
 %this is the general format of the simulator script
 close all; clear all; clc;
 
