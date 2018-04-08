@@ -24,7 +24,7 @@ k = place (A, B, p);
 %check stability
 eig_vals = eig(A-B*k)
 
-%step 3 - obtain f - observerservability?
+%step 3 - obtain f - observability?
 p2 = [-50,-60,-700, -800];
 f = place(A', C', p2)
 f = f'
